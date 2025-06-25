@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FISHDATA>
+    <FISH>
+        <ID>0</ID>
+        <NAME>Fish</NAME>
+        <DESC>A normal saltwater fish.</DESC>
+        <IMG>images/0_fish.png</IMG>
+    </FISH>
+    <FISH>
+        <ID>1</ID>
+        <NAME>Attentive Fish</NAME>
+        <DESC>Its eyes sting.</DESC>
+        <IMG>images/1_attentive_fish.png</IMG>
+    </FISH>
+    <FISH>
+        <ID>2</ID>
+        <NAME>Go Fish</NAME>
+        <DESC>It's not actually good at card games.</DESC>
+        <IMG>images/2_go_fish.png</IMG>
+    </FISH>
+    <FISH>
+        <ID>3</ID>
+        <NAME>Nega Fish</NAME>
+        <DESC>It's a miracle you can even hold this.</DESC>
+        <IMG>images/3_nega_fish.png</IMG>
+    </FISH>
+    <FISH>
+        <ID>4</ID>
+        <NAME>Troll Fish</NAME>
+        <DESC>hahahahahahahahahahhahahahahahahahahahaha</DESC>
+        <IMG>images/4_troll_fish.png</IMG>
+    </FISH>
+    <FISH>
+        <ID>5</ID>
+        <NAME>Bear</NAME>
+        <DESC>There's a fish in its mouth. It counts.</DESC>
+        <IMG>images/5_bear.png</IMG>
+    </FISH>
+    <FISH>
+        <ID>6</ID>
+        <NAME>Gold Fish</NAME>
+        <DESC>GREED IS GOOD.</DESC>
+        <IMG>images/6_gold_fish.png</IMG>
+    </FISH>
+    <FISH>
+        <ID>7</ID>
+        <NAME>Red Fish</NAME>
+        <DESC>what</DESC>
+        <IMG>images/7_red_fish.png</IMG>
+    </FISH>
+    <FISH>
+        <ID>1</ID>
+        <NAME>Two Fish</NAME>
+        <DESC>how</DESC>
+        <IMG>images/8_two_fish.png</IMG>
+    </FISH>
+</FISHDATA>

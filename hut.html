@@ -1,0 +1,326 @@
+<html>
+  <head>
+    <!--AFRAME + PLUGINS-->
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-animation-component@^4.1.1/dist/aframe-animation-timeline-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.4/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.3/dist/aframe-physics-system.min.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component@1.5.x/dist/aframe-environment-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
+
+    <style>
+    * {
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+
+    #inventorybutton {
+      position: fixed; 
+      bottom: 10px; 
+      left: 10px; 
+      width: 300px; 
+      height: 100px; 
+      background-color: coral; 
+      border: 10px solid brown; 
+      border-radius: 10px; 
+      box-shadow: 5px 5px black; 
+      text-align: center; 
+      line-height: 100px;
+      font-weight: bold;
+      font-size: 35px;
+      color: black;
+      cursor:pointer;
+      z-index: 10;
+    }
+    #inventorybutton:hover {
+      background-color: brown; 
+      color: white;
+    }
+
+    #inventorydisplay{
+      position: absolute;
+            width: 1080px;
+            height: 720px;
+            top: 100%;
+            left: 50vw - 360px;
+            margin: 20px;
+            background-color: coral; 
+            border: 10px solid brown; 
+            border-radius: 10px; 
+            float: left;
+            transition: all 0.5s;
+            box-shadow: 5px 5px black; 
+    }
+
+    .card{
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 10px;
+            background-color: coral; 
+            border: 10px solid brown; 
+            border-radius: 10px; 
+            float: left;
+          }
+
+    .card:hover{
+                background-color: brown; 
+              }
+    
+    #tooltipcard {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-left: 70px;
+            margin-right: 70px;
+            margin-top: 70px;
+            margin-bottom: 20px;
+            background-color: coral; 
+            border: 10px solid brown; 
+            border-radius: 10px; 
+            float: left;
+          }
+
+    .cardimage, #tooltipcardimage {
+            background-size: contain;
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 100%;
+          }
+
+    .cardimagealt {
+            background-size: contain;
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 100%;
+            filter: grayscale(100%); 
+          }
+
+    .countertext {
+                position: absolute;
+                right: 10px;
+                bottom: 0px;
+                color: white;
+                z-index: 8;
+                font-weight: bold;
+                -webkit-text-stroke-width: 1.5px;
+                -webkit-text-stroke-color: black;
+                text-shadow: 3px 3px black;
+                background-color: transparent;
+                font-size: 40px;
+                font-family: sans-serif;
+          }
+    #fishname {
+                color: white;
+                z-index: 8;
+                font-weight: bold;
+                -webkit-text-stroke-width: 3px;
+                -webkit-text-stroke-color: black;
+                background-color: transparent;
+                font-size: 40px;
+                font-family: sans-serif;
+                width: 100%;
+                height: 40px;
+                float:left;
+    }
+
+    #fishdesc {
+                color: black;
+                z-index: 8;
+                font-weight: bold;
+                background-color: transparent;
+                font-size: 20px;
+                font-family: sans-serif;
+                width: 100%;
+                height: 350px;
+                float:left;
+    }
+    </style>
+  </head>
+  
+  <body>
+    <a-scene id="scene" physics="debug: false" loading-screen="dotsColor: white; backgroundColor: #92E2E2" fog="type: linear; color: #92E2E2; near: 2; far: 65">
+
+        <!--USER CAMERA-->
+        <a-entity id="rig" movement-controls="speed: 0.7" position="0 1 0">
+          <a-entity camera position="0 1.6 0" rotation="0 180 0" look-controls="pointerLockEnabled: false">
+            <a-cursor></a-cursor>
+          </a-entity>
+        </a-entity>
+        
+        <!--FLOOR/WALLS/CEILING-->
+        <a-plane position="0 0 0" rotation="-90 0 0" color="#4D2B1E" scale="20 20 20"></a-plane>
+        <a-box static-body position="12 5 0" width="5" height="10" depth="20" color="#674928"></a-box>
+        <a-box static-body position="-12 5 0" width="5" height="10" depth="20" color="#674928"></a-box>
+        <a-box static-body position="0 5 12" width="20" height="10" depth="5" color="#674928"></a-box>
+        <a-box static-body position="0 5 -12" width="20" height="10" depth="5" color="#674928"></a-box>
+        <a-box static-body position="0 10 0" width="20" height="3" depth="20" color="#4D2B1E"></a-box>
+
+        <!--DOORFRAME-->
+        <a-entity position="0 2 9.5">
+            <a-box static-body position="0 0.1 0" width="3" height="4.5" depth="0.5" color="#4D2B1E"></a-box>
+            <a-box static-body position="0 0 0" width="2.4" height="4.2" depth="0.55" color="black"></a-box>
+        </a-entity>
+
+        <!--DOOR-->
+        <a-entity id="door" position="-1.27889 2.1058 9.26021"
+        animation__open="autoplay: false; property: rotation; from: 0 0 0; to: 0 90 0; dur: 1000; easing: easeOutElastic; startEvents: openAnimation"
+        >
+          <a-box position="1.297 0 0" static-body width="2.7" height="4.3" depth="0.1705" color="#4D2B1E"></a-box>
+        </a-entity>
+
+        <!--BED-->
+        <a-entity position="7 0 -5.5">
+            <a-box scale="4 2 7" color="#4D2B1E"></a-box>
+            <a-box scale="3.5 2.3 6.5"></a-box>
+            <a-box scale="3.7 2.5 5.7" position="0 0 0.473" color="#BD273B"></a-box>
+        </a-entity>
+
+        <!--TABLE-->
+        <a-entity position="-6.17 1.6 -7">
+            <a-box scale="6 0.4 4" color="#4D2B1E"></a-box>
+            <a-box scale="0.3 2 0.3" color="#674928" position="2.7 -0.75 1.7"></a-box>
+            <a-box scale="0.3 2 0.3" color="#674928" position="2.7 -0.75 -1.7"></a-box>
+            <a-box scale="0.3 2 0.3" color="#674928" position="-2.7 -0.75 1.7"></a-box>
+            <a-box scale="0.3 2 0.3" color="#674928" position="-2.7 -0.75 -1.7"></a-box>
+        </a-entity>
+        
+        <!--HOUSE-->
+        <a-box static-body position="-15 3 -15" width="10" height="7" depth="10" color="#674928"></a-box>
+        <a-box static-body position="-7 3 -15" width="16" height="5" depth="6" color="#674928"></a-box>
+        <a-box static-body position="-15 6.5 -15" rotation="0 0 3" width="10.5" height="1" depth="10.5" color="#4D2B1E"></a-box>
+        <a-box static-body position="-7 5.5 -15" rotation="0 0 -3" width="16.5" height="1" depth="6.5" color="#4D2B1E"></a-box>
+        <a-sky color="#92E2E2"></a-sky>
+    </a-scene>
+
+    <div style="display: none">
+      <div id="inventory">0</div>
+    </div>
+
+    <div id="inventorybutton" onclick="loadInventory()">
+      INVENTORY
+    </div>
+
+    <div id="inventorydisplay">
+        <div id="inventorycontainer" style="width: 720px; height:720px; float:left"></div>
+        <div id="inventorytooltip" style="width: 360px; height:720px; float:left; text-align: center;">
+          <div id="tooltipcard"><img id="tooltipcardimage"></img></div>
+          <div id="fishname"></div>
+          <div id="fishdesc"></div>
+        </div>
+    </div>
+
+    <script>
+      const scene = AFRAME.scenes[0];
+
+        window.onload = function() {
+          var queryString = window.location.search;
+          var urlParams = new URLSearchParams(queryString);
+          var transferinventory = urlParams.get('inventory')
+          document.getElementById("inventory").innerHTML =  transferinventory;
+          if (!transferinventory) {
+            document.getElementById("inventory").innerHTML = 0
+            }
+        };
+
+        var rigEl = document.querySelector('#rig');
+        var doorEl = document.querySelector('#door');
+        var InventoryOpen = 0;
+
+        doorEl.addEventListener('click', function() {
+            if (InventoryOpen == 0){
+              doorEl.emit('openAnimation', null, false);
+              rigEl.setAttribute('movement-controls', 'speed: 0');
+              InventoryOpen = 1;
+            }
+          }
+        );
+
+        doorEl.addEventListener('animationcomplete__open', function() {
+          var transferinventory = document.getElementById("inventory").innerHTML
+          var newurl = 'index.html?inventory=' + transferinventory
+              location.replace(newurl);
+          }
+        );
+
+        function loadInventory() {
+        if (InventoryOpen == 0) {
+          {
+            var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              Inventory(this);
+            }
+          };
+          xhttp.open('GET', 'FishData.xml', true);
+          xhttp.send();
+          }
+        } else {
+          document.getElementById('inventorydisplay').style.top = '100%';
+          InventoryOpen = 0;
+        }
+
+        function Inventory(john) {
+            var inventory = document.getElementById("inventory").innerHTML;
+            var searchArr = inventory.split(",");
+            console.log(searchArr);
+            var facts = 0;
+            let myArray = inventory.split(",");
+            var xmlDoc = john.responseXML;
+            var totalFishCard = '';
+            var FishCard = '';
+            var x = xmlDoc.getElementsByTagName('FISH');
+            var y = myArray;
+
+            for (i = 0; i < x.length; i++) {
+              var facts = 0;
+              var cardattri = 'cardimagealt';
+              for (j = 0; j < y.length; j++) {
+                if (myArray[j] == x[i].getElementsByTagName('ID')[0].childNodes[0].nodeValue) {
+                facts = facts + 1
+                var cardattri = 'cardimage';
+                }
+              }
+                //card = '<div class="card" onclick = "FishInspect(' + i + ')"><img class="' + cardattri + '" src="' + x[i].getElementsByTagName('IMG')[0].childNodes[0].nodeValue + '">' + '<div class="countertext">'+ facts + ' </div></div>';
+                if (facts > 0)
+              {
+                FishCard = '<div class="card" onmouseenter="TooltipDisplay(' + i + ')" onmouseleave="TooltipClear()"><img class="' + cardattri + '" src="' + x[i].getElementsByTagName('IMG')[0].childNodes[0].nodeValue + '">' + '<div class="countertext">'+ facts + ' </div></div>';
+              } else {
+                FishCard = '<div class="card"><img class="' + cardattri + '" src="' + x[i].getElementsByTagName('IMG')[0].childNodes[0].nodeValue + '">' + '<div class="countertext">'+ facts + ' </div></div>';
+              }
+                
+                totalFishCard = totalFishCard + FishCard; 
+            }
+            document.getElementById('inventorycontainer').innerHTML = totalFishCard;
+            document.getElementById('inventorydisplay').style.top = '25%';
+            InventoryOpen = 1;
+        }
+      };
+
+      function TooltipDisplay(id) {
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              TooltipDisplay2(this, id);
+            }
+          };
+          xhttp.open('GET', 'FishData.xml', true);
+          xhttp.send();
+
+          function TooltipDisplay2(john, id) {
+            var xmlDoc = john.responseXML;
+            var x = xmlDoc.getElementsByTagName('FISH');
+            document.getElementById('tooltipcardimage').src = x[id].getElementsByTagName('IMG')[0].childNodes[0].nodeValue;
+            document.getElementById('fishname').innerHTML = x[id].getElementsByTagName('NAME')[0].childNodes[0].nodeValue;
+            document.getElementById('fishdesc').innerHTML = x[id].getElementsByTagName('DESC')[0].childNodes[0].nodeValue;
+          };
+      };
+
+      function TooltipClear() {
+        document.getElementById('tooltipcardimage').src = 'images/blank.png';
+        document.getElementById('fishname').innerHTML = '';
+        document.getElementById('fishdesc').innerHTML = '';
+      };
+
+  </script>
+  </body>
+</html>
